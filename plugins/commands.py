@@ -17,7 +17,8 @@ import base64
 logger = logging.getLogger(__name__)
 
 BATCH_FILES = {}
-
+GRP_LNK = environ.get('GRP_LNK', 'https://t.me/imoviesrobot_group')
+CHNL_LNK = environ.get('CHNL_LNK', 'https://t.me/iMoviesRobot_channel')
 @Client.on_message(filters.command("start") & filters.incoming)
 async def start(client, message):
     if message.chat.type in [enums.ChatType.GROUP, enums.ChatType.SUPERGROUP]:
@@ -102,7 +103,7 @@ async def start(client, message):
             )
         return
     if len(message.command) == 2 and message.command[1] in ["subscribe", "error", "okay", "help"]:
-       buttons = [[
+        buttons = [[
                     InlineKeyboardButton('ADD ME TO YOUR GROUP', url=f'http://t.me/{temp.U_NAME}?startgroup=true')
                 ],[
                     InlineKeyboardButton('CHANNEL', url=CHNL_LNK),
