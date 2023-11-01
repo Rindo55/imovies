@@ -17,8 +17,8 @@ import base64
 logger = logging.getLogger(__name__)
 
 BATCH_FILES = {}
-GRP_LNK = environ.get('GRP_LNK', 'https://t.me/imoviesrobot_group')
-CHNL_LNK = environ.get('CHNL_LNK', 'https://t.me/iMoviesRobot_channel')
+GRP_LNK = 'https://t.me/imoviesrobot_group'
+CHNL_LNK = 'https://t.me/iMoviesRobot_channel'
 @Client.on_message(filters.command("start") & filters.incoming)
 async def start(client, message):
     if message.chat.type in [enums.ChatType.GROUP, enums.ChatType.SUPERGROUP]:
