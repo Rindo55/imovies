@@ -97,7 +97,7 @@ async def next_page(bot, query):
         btn = [
             [
                 InlineKeyboardButton(
-                   text=f"🔖{get_size(file.file_size)}🔮{file.file_name}", callback_data=f'{pre}#{file.file_id}'
+                   text=f"[{get_size(file.file_size)}] {file.file_name}", callback_data=f'{pre}#{file.file_id}'
                 ),
             ]
             for file in files
@@ -521,34 +521,37 @@ async def cb_handler(client: Client, query: CallbackQuery):
 
         try:
             if AUTH_CHANNEL and not await is_subscribed(client, query):
-                if clicked == typed:
-                    await query.answer(url=f"https://t.me/{temp.U_NAME}?start={ident}_{file_id}")
-                    return
-                else:
-                    await query.answer(f"𝖧𝖾𝗒 {query.from_user.first_name}, 𝖳𝗁𝗂𝗌 𝗂𝗌 𝗇𝗈𝗍 𝗒𝗈𝗎𝗋 𝗋𝖾𝗊𝗎𝖾𝗌𝗍 !", show_alert=True)
-            elif settings['botpm']:
-                if clicked == typed:
-                    await query.answer(url=f"https://t.me/{temp.U_NAME}?start={ident}_{file_id}")
-                    return
-                else:
-                    await query.answer(f"𝖧𝖾𝗒 {query.from_user.first_name}, 𝖳𝗁𝗂𝗌 𝗂𝗌 𝗇𝗈𝗍 𝗒𝗈𝗎𝗋 𝗋𝖾𝗊𝗎𝖾𝗌𝗍 !", show_alert=True)
+                await query.answer(url=f"https://t.me/{temp.U_NAME}?start={ident}_{file_id}")
+                return            
             else:
-                if clicked == typed:
-                    await client.send_cached_media(
-                        chat_id=query.from_user.id,
-                        file_id=file_id,
-                        caption=f_caption,
-                        protect_content=True if ident == "filep" else False,
-                        reply_markup=InlineKeyboardMarkup( [ [ InlineKeyboardButton('⚔️ 𝖯𝖨𝖱𝖮 𝖴𝖯𝖣𝖠𝖳𝖤𝖲 ⚔️', url="https://t.me/piroxbots") ] ] ))
-                else:
-                    await query.answer(f"𝖧𝖾𝗒 {query.from_user.first_name}, 𝖳𝗁𝗂𝗌 𝗂𝗌 𝗇𝗈𝗍 𝗒𝗈𝗎𝗋 𝗋𝖾𝗊𝗎𝖾𝗌𝗍 !", show_alert=True)
-                await query.answer('𝖢𝗁𝖾𝖼𝗄 𝖯𝖬, 𝖨 𝗁𝖺𝗏𝖾 𝗌𝖾𝗇𝗍 𝖿𝗂𝗅𝖾𝗌 𝗂𝗇 𝖯𝖬', show_alert=True)
-        except UserIsBlocked:
-            await query.answer('𝖴𝗇𝖻𝗅𝗈𝖼𝗄 𝗍𝗁𝖾 𝖻𝗈𝗍 𝗆𝖺𝗇𝗁 !', show_alert=True)
-        except PeerIdInvalid:
-            await query.answer(url=f"https://t.me/{temp.U_NAME}?start={ident}_{file_id}")
+                await client.send_cached_media(
+                    chat_id=query.from_user.id,
+                    file_id=file_id,
+                    caption=f_caption,
+                    protect_content=True if ident == "pmfilep" else False,
+                    reply_markup=InlineKeyboardMarkup(
+                        [
+                            [
+                                InlineKeyboardButton(
+	                                "𝙎𝙀𝙀 𝙈𝙊𝙍𝙀 𝙇𝙄𝙆𝙀 𝙏𝙃𝙀𝙎𝙀 🎬", url="https://t.me/iRecommendations"
+		                        )
+	                        ],
+	                        [
+                                InlineKeyboardButton(
+	                                "𝙒𝘼𝙏𝘾𝙃 𝘼𝙉𝙄𝙈𝙀 💮", url="https://t.me/iAnimeHub"
+		                        )
+	                        ],
+	                        [			
+                                InlineKeyboardButton(
+                                    "👨‍👩‍👧‍👦 ᴘʟᴇᴀsᴇ sʜᴀʀᴇ & sᴜᴘᴘᴏʀᴛ 🧲", url=f"https://t.me/share/url?url=https://t.me/{temp.U_NAME}"
+                                )
+                            ],
+                        ]
+                    ),
+                )
+                                       
         except Exception as e:
-            await query.answer(url=f"https://t.me/{temp.U_NAME}?start={ident}_{file_id}")
+            await query.answer(f"⚠️ Error {e}", show_alert=True)
     elif query.data.startswith("checksub"):
         if AUTH_CHANNEL and not await is_subscribed(client, query):
             await query.answer("𝖨 𝖫𝗂𝗄𝖾 𝖸𝗈𝗎𝗋 𝖲𝗆𝖺𝗋𝗍𝗇𝖾𝗌𝗌, 𝖡𝗎𝗍 𝖣𝗈𝗇'𝗍 𝖡𝖾 𝖮𝗏𝖾𝗋𝗌𝗆𝖺𝗋𝗍 😒 \n𝖩𝗈𝗂𝗇 𝖴𝗉𝖽𝖺𝗍𝖾 𝖢𝗁𝖺𝗇𝗇𝖾𝗅 𝖿𝗂𝗋𝗌𝗍 ;)", show_alert=True)
@@ -577,7 +580,16 @@ async def cb_handler(client: Client, query: CallbackQuery):
             file_id=file_id,
             caption=f_caption,
             protect_content=True if ident == 'checksubp' else False,
-            reply_markup=InlineKeyboardMarkup( [ [ InlineKeyboardButton('⚔️ 𝖯𝖨𝖱𝖮 𝖴𝖯𝖣𝖠𝖳𝖤𝖲 ⚔️', url="https://t.me/piroxbots") ] ] ))
+            reply_markup=InlineKeyboardMarkup(
+                         [
+                             [
+                                InlineKeyboardButton(
+                                    "👨‍👩‍👧‍👦 ᴘʟᴇᴀsᴇ sʜᴀʀᴇ & sᴜᴘᴘᴏʀᴛ 🧲", url=f"https://t.me/share/url?url=https://t.me/{temp.U_NAME}"
+                                )
+                             ],
+                         ]
+                    ),
+                )
     elif query.data == "pages":
         await query.answer()
 
@@ -889,19 +901,21 @@ async def cb_handler(client: Client, query: CallbackQuery):
         await query.answer("𝗥𝗲𝗾𝘂𝗲𝘀𝘁𝘀 𝗙𝗼𝗿𝗺𝗮𝘁𝘀\n\n• 𝖲𝗈𝗅𝗈 2017\n• 𝖣𝗁𝗈𝗈𝗆 3 𝖧𝗂𝗇𝖽𝗂\n• 𝖪𝗎𝗋𝗎𝗉 𝖪𝖺𝗇𝗇𝖺𝖽𝖺\n• 𝖣𝖺𝗋𝗄 𝗌01\n• 𝖲𝗁𝖾 𝖧𝗎𝗅𝗄 720𝗉\n• 𝖥𝗋𝗂𝖾𝗇𝖽𝗌 𝗌03 1080𝗉\n\n‼️𝗗𝗼𝗻𝘁 𝗮𝗱𝗱 𝘄𝗼𝗿𝗱𝘀 & 𝘀𝘆𝗺𝗯𝗼𝗹𝘀  , . - 𝗹𝗶𝗸𝗲 send link movie series 𝗲𝘁𝗰‼️", True)
     
     elif query.data == 'tips':
-        await query.answer("𝖳𝗁𝗂𝗌 𝖬𝖾𝗌𝗌𝖺𝗀𝖾 𝖶𝗂𝗅𝗅 𝖡𝖾 𝖣𝖾𝗅𝖾𝗍𝖾𝖽 𝖠𝖿𝗍𝖾𝗋 5 𝖬𝗂𝗇𝗎𝗍𝖾𝗌 𝗍𝗈 𝖯𝗋𝖾𝗏𝖾𝗇𝗍 𝖢𝗈𝗉𝗒𝗋𝗂𝗀𝗁𝗍 !\n\n𝖳𝗁𝖺𝗇𝗄 𝖸𝗈𝗎 𝖥𝗈𝗋 𝖴𝗌𝗂𝗇𝗀 𝖬𝖾 😊\n\n\n𝖯𝗈𝗐𝖾𝗋𝖾𝖽 𝖡𝗒 𝖯𝖨𝖱𝖮", True)
+        await query.answer("𝖳𝗁𝗂𝗌 𝖬𝖾𝗌𝗌𝖺𝗀𝖾 𝖶𝗂𝗅𝗅 𝖡𝖾 𝖣𝖾𝗅𝖾𝗍𝖾𝖽 𝖠𝖿𝗍𝖾𝗋 5 𝖬𝗂𝗇𝗎𝗍𝖾𝗌 𝗍𝗈 𝖯𝗋𝖾𝗏𝖾𝗇𝗍 𝖢𝗈𝗉𝗒𝗋𝗂𝗀𝗁𝗍 !\n\n𝖳𝗁𝖺𝗇𝗄 𝖸𝗈𝗎 𝖥𝗈𝗋 𝖴𝗌𝗂𝗇𝗀 𝖬𝖾 😊", True)
 
-    elif query.data == "start":
+    elif query.data == "start":                        
         buttons = [[
-                    InlineKeyboardButton('➕ 𝖠𝖽𝖽 𝖬𝖾 𝖳𝗈 𝖸𝗈𝗎𝗋 𝖦𝗋𝗈𝗎𝗉 ➕', url=f"http://t.me/{temp.U_NAME}?startgroup=true")
+                    InlineKeyboardButton('ADD ME TO YOUR GROUP', url=f'http://t.me/{temp.U_NAME}?startgroup=true')
                 ],[
-                    InlineKeyboardButton('🛡 𝖮𝗐𝗇𝖾𝗋', callback_data="owner_info"),
-                    InlineKeyboardButton('🧩 𝖲𝗎𝗉𝗉𝗈𝗋𝗍 𝖦𝗋𝗈𝗎𝗉', url=f"https://t.me/{SUPPORT_CHAT}")
+                    InlineKeyboardButton('CHANNEL', url=CHNL_LNK),
+                    InlineKeyboardButton('GROUP', url=GRP_LNK)
                 ],[
-                    InlineKeyboardButton('ℹ️ 𝖧𝖾𝗅𝗉', callback_data='help'),
-                    InlineKeyboardButton('😊 𝖠𝖻𝗈𝗎𝗍', callback_data='about'),
+                    InlineKeyboardButton('REQUEST', url='https://t.me/RequestiMoviesBot'),
+                    InlineKeyboardButton('SEARCH INLINE', switch_inline_query_current_chat='')
                 ],[
-                    InlineKeyboardButton('🔎 𝖨𝗇𝗅𝗂𝗇𝖾 𝖲𝖾𝖺𝗋𝖼𝗁', switch_inline_query_current_chat='')
+                    InlineKeyboardButton('⚠️ JOIN OUR BACKUP CHANNEL ⚠️', url='https://t.me/IMoviesRobot_backup'),
+                ],[
+                    InlineKeyboardButton('HOW TO USE THIS BOT ⚙️', url='https://t.me/iMoviesRobot_channel/11')
                   ]]
         
         reply_markup = InlineKeyboardMarkup(buttons)
@@ -1294,7 +1308,7 @@ async def auto_filter(client, msg, spoll=False):
         btn = [
             [
                 InlineKeyboardButton(
-                    text=f"🔖{get_size(file.file_size)}🔮{file.file_name}", callback_data=f'{pre}#{file.file_id}'
+                    text=f"[{get_size(file.file_size)}] {file.file_name}", callback_data=f'{pre}#{file.file_id}'
                 ),
             ]
             for file in files
@@ -1419,7 +1433,7 @@ async def auto_filter(client, msg, spoll=False):
             **locals()
         )
     else:
-        cap = f"<b>👋 𝖧𝖾𝗒 {message.from_user.mention}\n📁 𝖸𝗈𝗎𝗋 𝖥𝗂𝗅𝖾𝗌 𝖠𝗋𝖾 𝖱𝖾𝖺𝖽𝗒\n\n♨️ 𝖯𝗈𝗐𝖾𝗋𝖾𝖽 𝖡𝗒 @piroxbots</b>"
+        cap = f"<b>👋 𝖧𝖾𝗒 {message.from_user.mention}\n📁 Your file are now ready.</b>"
     if imdb and imdb.get('poster'):
         try:
             hehe = await message.reply_photo(photo=imdb.get('poster'), caption=cap[:1024], reply_markup=InlineKeyboardMarkup(btn))
@@ -1581,7 +1595,7 @@ async def manual_filters(client, message, text=False):
                 try:
                     if fileid == "None":
                         if btn == "[]":
-                            piroxrk = await client.send_message(
+                            zoro = await client.send_message(
                                 group_id, 
                                 reply_text, 
                                 disable_web_page_preview=True,
@@ -1593,25 +1607,25 @@ async def manual_filters(client, message, text=False):
                                     await auto_filter(client, message)
                                     try:
                                         if settings['auto_delete']:
-                                            await piroxrk.delete()
+                                            await zoro.delete()
                                     except KeyError:
                                         grpid = await active_connection(str(message.from_user.id))
                                         await save_group_settings(grpid, 'auto_delete', True)
                                         settings = await get_settings(message.chat.id)
                                         if settings['auto_delete']:
-                                            await piroxrk.delete()
+                                            await zoro.delete()
                                 else:
                                     try:
                                         if settings['auto_delete']:
                                             await asyncio.sleep(600)
-                                            await piroxrk.delete()
+                                            await zoro.delete()
                                     except KeyError:
                                         grpid = await active_connection(str(message.from_user.id))
                                         await save_group_settings(grpid, 'auto_delete', True)
                                         settings = await get_settings(message.chat.id)
                                         if settings['auto_delete']:
                                             await asyncio.sleep(600)
-                                            await piroxrk.delete()
+                                            await zoro.delete()
                             except KeyError:
                                 grpid = await active_connection(str(message.from_user.id))
                                 await save_group_settings(grpid, 'auto_ffilter', True)
@@ -1621,7 +1635,7 @@ async def manual_filters(client, message, text=False):
 
                         else:
                             button = eval(btn)
-                            piroxrk = await client.send_message(
+                            zoro = await client.send_message(
                                 group_id,
                                 reply_text,
                                 disable_web_page_preview=True,
@@ -1634,25 +1648,25 @@ async def manual_filters(client, message, text=False):
                                     await auto_filter(client, message)
                                     try:
                                         if settings['auto_delete']:
-                                            await piroxrk.delete()
+                                            await zoro.delete()
                                     except KeyError:
                                         grpid = await active_connection(str(message.from_user.id))
                                         await save_group_settings(grpid, 'auto_delete', True)
                                         settings = await get_settings(message.chat.id)
                                         if settings['auto_delete']:
-                                            await piroxrk.delete()
+                                            await zoro.delete()
                                 else:
                                     try:
                                         if settings['auto_delete']:
                                             await asyncio.sleep(600)
-                                            await piroxrk.delete()
+                                            await zoro.delete()
                                     except KeyError:
                                         grpid = await active_connection(str(message.from_user.id))
                                         await save_group_settings(grpid, 'auto_delete', True)
                                         settings = await get_settings(message.chat.id)
                                         if settings['auto_delete']:
                                             await asyncio.sleep(600)
-                                            await piroxrk.delete()
+                                            await zoro.delete()
                             except KeyError:
                                 grpid = await active_connection(str(message.from_user.id))
                                 await save_group_settings(grpid, 'auto_ffilter', True)
@@ -1661,7 +1675,7 @@ async def manual_filters(client, message, text=False):
                                     await auto_filter(client, message)
 
                     elif btn == "[]":
-                        piroxrk = await client.send_cached_media(
+                        zoro = await client.send_cached_media(
                             group_id,
                             fileid,
                             caption=reply_text or "",
@@ -1673,25 +1687,25 @@ async def manual_filters(client, message, text=False):
                                 await auto_filter(client, message)
                                 try:
                                     if settings['auto_delete']:
-                                        await piroxrk.delete()
+                                        await zoro.delete()
                                 except KeyError:
                                     grpid = await active_connection(str(message.from_user.id))
                                     await save_group_settings(grpid, 'auto_delete', True)
                                     settings = await get_settings(message.chat.id)
                                     if settings['auto_delete']:
-                                        await piroxrk.delete()
+                                        await zoro.delete()
                             else:
                                 try:
                                     if settings['auto_delete']:
                                         await asyncio.sleep(600)
-                                        await piroxrk.delete()
+                                        await zoro.delete()
                                 except KeyError:
                                     grpid = await active_connection(str(message.from_user.id))
                                     await save_group_settings(grpid, 'auto_delete', True)
                                     settings = await get_settings(message.chat.id)
                                     if settings['auto_delete']:
                                         await asyncio.sleep(600)
-                                        await piroxrk.delete()
+                                        await zoro.delete()
                         except KeyError:
                             grpid = await active_connection(str(message.from_user.id))
                             await save_group_settings(grpid, 'auto_ffilter', True)
@@ -1701,7 +1715,7 @@ async def manual_filters(client, message, text=False):
 
                     else:
                         button = eval(btn)
-                        piroxrk = await message.reply_cached_media(
+                        zoro = await message.reply_cached_media(
                             fileid,
                             caption=reply_text or "",
                             reply_markup=InlineKeyboardMarkup(button),
@@ -1712,25 +1726,25 @@ async def manual_filters(client, message, text=False):
                                 await auto_filter(client, message)
                                 try:
                                     if settings['auto_delete']:
-                                        await piroxrk.delete()
+                                        await zoro.delete()
                                 except KeyError:
                                     grpid = await active_connection(str(message.from_user.id))
                                     await save_group_settings(grpid, 'auto_delete', True)
                                     settings = await get_settings(message.chat.id)
                                     if settings['auto_delete']:
-                                        await piroxrk.delete()
+                                        await zoro.delete()
                             else:
                                 try:
                                     if settings['auto_delete']:
                                         await asyncio.sleep(600)
-                                        await piroxrk.delete()
+                                        await zoro.delete()
                                 except KeyError:
                                     grpid = await active_connection(str(message.from_user.id))
                                     await save_group_settings(grpid, 'auto_delete', True)
                                     settings = await get_settings(message.chat.id)
                                     if settings['auto_delete']:
                                         await asyncio.sleep(600)
-                                        await piroxrk.delete()
+                                        await zoro.delete()
                         except KeyError:
                             grpid = await active_connection(str(message.from_user.id))
                             await save_group_settings(grpid, 'auto_ffilter', True)
@@ -1762,7 +1776,7 @@ async def global_filters(client, message, text=False):
                 try:
                     if fileid == "None":
                         if btn == "[]":
-                            piroxrk = await client.send_message(
+                            zoro = await client.send_message(
                                 group_id, 
                                 reply_text, 
                                 disable_web_page_preview=True,
@@ -1776,25 +1790,25 @@ async def global_filters(client, message, text=False):
                                         await auto_filter(client, message)
                                         try:
                                             if settings['auto_delete']:
-                                                await piroxrk.delete()
+                                                await zoro.delete()
                                         except KeyError:
                                             grpid = await active_connection(str(message.from_user.id))
                                             await save_group_settings(grpid, 'auto_delete', True)
                                             settings = await get_settings(message.chat.id)
                                             if settings['auto_delete']:
-                                                await piroxrk.delete()
+                                                await zoro.delete()
                                     else:
                                         try:
                                             if settings['auto_delete']:
                                                 await asyncio.sleep(600)
-                                                await piroxrk.delete()
+                                                await zoro.delete()
                                         except KeyError:
                                             grpid = await active_connection(str(message.from_user.id))
                                             await save_group_settings(grpid, 'auto_delete', True)
                                             settings = await get_settings(message.chat.id)
                                             if settings['auto_delete']:
                                                 await asyncio.sleep(600)
-                                                await piroxrk.delete()
+                                                await zoro.delete()
                                 except KeyError:
                                     grpid = await active_connection(str(message.from_user.id))
                                     await save_group_settings(grpid, 'auto_ffilter', True)
@@ -1804,17 +1818,17 @@ async def global_filters(client, message, text=False):
                             else:
                                 try:
                                     if settings['auto_delete']:
-                                        await piroxrk.delete()
+                                        await zoro.delete()
                                 except KeyError:
                                     grpid = await active_connection(str(message.from_user.id))
                                     await save_group_settings(grpid, 'auto_delete', True)
                                     settings = await get_settings(message.chat.id)
                                     if settings['auto_delete']:
-                                        await piroxrk.delete()
+                                        await zoro.delete()
                             
                         else:
                             button = eval(btn)
-                            piroxrk = await client.send_message(
+                            zoro = await client.send_message(
                                 group_id,
                                 reply_text,
                                 disable_web_page_preview=True,
@@ -1829,25 +1843,25 @@ async def global_filters(client, message, text=False):
                                         await auto_filter(client, message)
                                         try:
                                             if settings['auto_delete']:
-                                                await piroxrk.delete()
+                                                await zoro.delete()
                                         except KeyError:
                                             grpid = await active_connection(str(message.from_user.id))
                                             await save_group_settings(grpid, 'auto_delete', True)
                                             settings = await get_settings(message.chat.id)
                                             if settings['auto_delete']:
-                                                await piroxrk.delete()
+                                                await zoro.delete()
                                     else:
                                         try:
                                             if settings['auto_delete']:
                                                 await asyncio.sleep(600)
-                                                await piroxrk.delete()
+                                                await zoro.delete()
                                         except KeyError:
                                             grpid = await active_connection(str(message.from_user.id))
                                             await save_group_settings(grpid, 'auto_delete', True)
                                             settings = await get_settings(message.chat.id)
                                             if settings['auto_delete']:
                                                 await asyncio.sleep(600)
-                                                await piroxrk.delete()
+                                                await zoro.delete()
                                 except KeyError:
                                     grpid = await active_connection(str(message.from_user.id))
                                     await save_group_settings(grpid, 'auto_ffilter', True)
@@ -1857,16 +1871,16 @@ async def global_filters(client, message, text=False):
                             else:
                                 try:
                                     if settings['auto_delete']:
-                                        await piroxrk.delete()
+                                        await zoro.delete()
                                 except KeyError:
                                     grpid = await active_connection(str(message.from_user.id))
                                     await save_group_settings(grpid, 'auto_delete', True)
                                     settings = await get_settings(message.chat.id)
                                     if settings['auto_delete']:
-                                        await piroxrk.delete()
+                                        await zoro.delete()
 
                     elif btn == "[]":
-                        piroxrk = await client.send_cached_media(
+                        zoro = await client.send_cached_media(
                             group_id,
                             fileid,
                             caption=reply_text or "",
@@ -1880,25 +1894,25 @@ async def global_filters(client, message, text=False):
                                     await auto_filter(client, message)
                                     try:
                                         if settings['auto_delete']:
-                                            await piroxrk.delete()
+                                            await zoro.delete()
                                     except KeyError:
                                         grpid = await active_connection(str(message.from_user.id))
                                         await save_group_settings(grpid, 'auto_delete', True)
                                         settings = await get_settings(message.chat.id)
                                         if settings['auto_delete']:
-                                            await piroxrk.delete()
+                                            await zoro.delete()
                                 else:
                                     try:
                                         if settings['auto_delete']:
                                             await asyncio.sleep(600)
-                                            await piroxrk.delete()
+                                            await zoro.delete()
                                     except KeyError:
                                         grpid = await active_connection(str(message.from_user.id))
                                         await save_group_settings(grpid, 'auto_delete', True)
                                         settings = await get_settings(message.chat.id)
                                         if settings['auto_delete']:
                                             await asyncio.sleep(600)
-                                            await piroxrk.delete()
+                                            await zoro.delete()
                             except KeyError:
                                 grpid = await active_connection(str(message.from_user.id))
                                 await save_group_settings(grpid, 'auto_ffilter', True)
@@ -1908,17 +1922,17 @@ async def global_filters(client, message, text=False):
                         else:
                             try:
                                 if settings['auto_delete']:
-                                    await piroxrk.delete()
+                                    await zoro.delete()
                             except KeyError:
                                 grpid = await active_connection(str(message.from_user.id))
                                 await save_group_settings(grpid, 'auto_delete', True)
                                 settings = await get_settings(message.chat.id)
                                 if settings['auto_delete']:
-                                    await piroxrk.delete()
+                                    await zoro.delete()
 
                     else:
                         button = eval(btn)
-                        piroxrk = await message.reply_cached_media(
+                        zoro = await message.reply_cached_media(
                             fileid,
                             caption=reply_text or "",
                             reply_markup=InlineKeyboardMarkup(button),
@@ -1932,25 +1946,25 @@ async def global_filters(client, message, text=False):
                                     await auto_filter(client, message)
                                     try:
                                         if settings['auto_delete']:
-                                            await piroxrk.delete()
+                                            await zoro.delete()
                                     except KeyError:
                                         grpid = await active_connection(str(message.from_user.id))
                                         await save_group_settings(grpid, 'auto_delete', True)
                                         settings = await get_settings(message.chat.id)
                                         if settings['auto_delete']:
-                                            await piroxrk.delete()
+                                            await zoro.delete()
                                 else:
                                     try:
                                         if settings['auto_delete']:
                                             await asyncio.sleep(600)
-                                            await piroxrk.delete()
+                                            await zoro.delete()
                                     except KeyError:
                                         grpid = await active_connection(str(message.from_user.id))
                                         await save_group_settings(grpid, 'auto_delete', True)
                                         settings = await get_settings(message.chat.id)
                                         if settings['auto_delete']:
                                             await asyncio.sleep(600)
-                                            await piroxrk.delete()
+                                            await zoro.delete()
                             except KeyError:
                                 grpid = await active_connection(str(message.from_user.id))
                                 await save_group_settings(grpid, 'auto_ffilter', True)
@@ -1960,13 +1974,13 @@ async def global_filters(client, message, text=False):
                         else:
                             try:
                                 if settings['auto_delete']:
-                                    await piroxrk.delete()
+                                    await zoro.delete()
                             except KeyError:
                                 grpid = await active_connection(str(message.from_user.id))
                                 await save_group_settings(grpid, 'auto_delete', True)
                                 settings = await get_settings(message.chat.id)
                                 if settings['auto_delete']:
-                                    await piroxrk.delete()
+                                    await zoro.delete()
 
                 except Exception as e:
                     logger.exception(e)
